@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Backend/">
+    <Project Path="Backend/RecipeSharingAPI.csproj" />
+  </Folder>
+  <Folder Name="/Frontend/">
+    <Project Path="Frontend/RecipeSharingFrontend.esproj" />
+  </Folder>
+  <Folder Name="/Database/">
+    <File Path="Database/schema.sql" />
+    <File Path="Database/seed_recipes.sql" />
+  </Folder>
+</Solution>

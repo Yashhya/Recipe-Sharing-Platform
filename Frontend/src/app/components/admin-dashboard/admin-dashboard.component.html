@@ -1,0 +1,189 @@
+<div class="dashboard-container">
+    <h1>Admin Dashboard</h1>
+    <p>Manage users and recipes structure with full control.</p>
+
+    <mat-card class="dashboard-card">
+        <mat-tab-group>
+
+            <!-- Analytics Tab -->
+            <mat-tab label="Analytics Overview">
+                <div class="tab-content padding-container">
+                    <div *ngIf="isLoadingAnalytics" class="loading-state">
+                        <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+
+                    <div *ngIf="!isLoadingAnalytics && analytics" class="analytics-grid">
+
+                        <!-- Top KPI Cards -->
+                        <div class="kpi-cards">
+                            <mat-card class="kpi-card">
+                                <mat-card-header>
+                                    <mat-icon mat-card-avatar class="kpi-icon users-icon">group</mat-icon>
+                                    <mat-card-title>Total Users</mat-card-title>
+                                    <mat-card-subtitle>Platform reach</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <h2 class="kpi-value">{{ analytics.totalUsers }}</h2>
+                                </mat-card-content>
+                            </mat-card>
+
+                            <mat-card class="kpi-card">
+                                <mat-card-header>
+                                    <mat-icon mat-card-avatar class="kpi-icon recipes-icon">restaurant_menu</mat-icon>
+                                    <mat-card-title>Total Recipes</mat-card-title>
+                                    <mat-card-subtitle>Platform content</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <h2 class="kpi-value">{{ analytics.totalRecipes }}</h2>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+
+                        <!-- Charts Row 1 -->
+                        <div class="charts-row">
+                            <mat-card class="chart-card">
+                                <mat-card-header>
+                                    <mat-card-title>User Registration Trend</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <canvas baseChart [data]="registrationsChartData" [options]="lineChartOptions"
+                                        type="line"></canvas>
+                                </mat-card-content>
+                            </mat-card>
+
+                            <mat-card class="chart-card">
+                                <mat-card-header>
+                                    <mat-card-title>Active vs Inactive Users (30 Days)</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content class="pie-container">
+                                    <canvas baseChart [data]="activeUsersChartData" [options]="pieChartOptions"
+                                        type="pie"></canvas>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+
+                        <!-- Charts Row 2 -->
+                        <div class="charts-row">
+                            <mat-card class="chart-card full-width">
+                                <mat-card-header>
+                                    <mat-card-title>Most Viewed Recipes</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <canvas baseChart [data]="mostViewedRecipeData" [options]="barChartOptions"
+                                        type="bar"></canvas>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+
+                    </div>
+                </div>
+            </mat-tab>
+
+            <!-- Users Tab -->
+            <mat-tab label="Manage Users">
+                <div class="tab-content">
+                    <div *ngIf="isLoadingUsers" class="loading-state">
+                        <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+
+                    <table *ngIf="!isLoadingUsers" mat-table [dataSource]="users" class="mat-elevation-z2 admin-table">
+
+                        <ng-container matColumnDef="userId">
+                            <th mat-header-cell *matHeaderCellDef> ID </th>
+                            <td mat-cell *matCellDef="let user"> {{user.userId}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="fullName">
+                            <th mat-header-cell *matHeaderCellDef> Name </th>
+                            <td mat-cell *matCellDef="let user"> {{user.fullName}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="email">
+                            <th mat-header-cell *matHeaderCellDef> Email </th>
+                            <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="role">
+                            <th mat-header-cell *matHeaderCellDef> Role </th>
+                            <td mat-cell *matCellDef="let user">
+                                <span [class.admin-badge]="user.role === 'Admin'"
+                                    class="role-badge">{{user.role}}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="createdAt">
+                            <th mat-header-cell *matHeaderCellDef> Joined </th>
+                            <td mat-cell *matCellDef="let user"> {{user.createdAt | date:'shortDate'}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef> Actions </th>
+                            <td mat-cell *matCellDef="let user">
+                                <button mat-icon-button color="warn" (click)="deleteUser(user.userId)"
+                                    [disabled]="user.role === 'Admin'">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="userColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: userColumns;"></tr>
+                    </table>
+                    <p *ngIf="users.length === 0 && !isLoadingUsers" class="empty-state">No users found.</p>
+                </div>
+            </mat-tab>
+
+            <!-- Recipes Tab -->
+            <mat-tab label="Manage Recipes">
+                <div class="tab-content">
+                    <div *ngIf="isLoadingRecipes" class="loading-state">
+                        <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+
+                    <table *ngIf="!isLoadingRecipes" mat-table [dataSource]="recipes"
+                        class="mat-elevation-z2 admin-table">
+
+                        <ng-container matColumnDef="recipeId">
+                            <th mat-header-cell *matHeaderCellDef> ID </th>
+                            <td mat-cell *matCellDef="let recipe"> {{recipe.recipeId}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="title">
+                            <th mat-header-cell *matHeaderCellDef> Title </th>
+                            <td mat-cell *matCellDef="let recipe"> {{recipe.title}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="categoryName">
+                            <th mat-header-cell *matHeaderCellDef> Category </th>
+                            <td mat-cell *matCellDef="let recipe"> {{recipe.categoryName}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="authorName">
+                            <th mat-header-cell *matHeaderCellDef> Author </th>
+                            <td mat-cell *matCellDef="let recipe"> {{recipe.authorName}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="createdAt">
+                            <th mat-header-cell *matHeaderCellDef> Published </th>
+                            <td mat-cell *matCellDef="let recipe"> {{recipe.createdAt | date:'shortDate'}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef> Actions </th>
+                            <td mat-cell *matCellDef="let recipe">
+                                <button mat-icon-button color="warn" (click)="deleteRecipe(recipe.recipeId)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="recipeColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: recipeColumns;"></tr>
+                    </table>
+                    <p *ngIf="recipes.length === 0 && !isLoadingRecipes" class="empty-state">No recipes found.</p>
+                </div>
+            </mat-tab>
+
+        </mat-tab-group>
+    </mat-card>
+</div>

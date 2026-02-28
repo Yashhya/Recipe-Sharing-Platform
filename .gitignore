@@ -1,0 +1,28 @@
+# .NET Core
+bin/
+obj/
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+.vscode/
+
+# Node.js
+node_modules/
+package-lock.json
+dist/
+
+# Logs and system files
+*.log
+.DS_Store
+Thumbs.db
+
+# Environments
+*.env
+*.env.local
+.angular/
+
+# API response and temp files
+api_response.json
+api_response_utf8.json
+/tmp/

@@ -1,0 +1,145 @@
+.dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+}
+
+.dashboard-container h1 {
+    font-size: 32px;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.dashboard-container p {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.dashboard-card {
+    padding: 24px;
+    border-radius: 16px !important;
+    background: var(--bg-card) !important;
+    box-shadow: var(--shadow-md);
+}
+
+.tab-content {
+    padding-top: 24px;
+}
+
+.admin-table {
+    width: 100%;
+    margin-top: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-medium);
+}
+
+.mat-mdc-header-row {
+    background-color: var(--bg-input);
+}
+
+.mat-mdc-header-cell {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.mat-mdc-cell {
+    color: var(--text-secondary);
+}
+
+.role-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--bg-input);
+    color: var(--text-main);
+}
+
+.admin-badge {
+    background: #e94560;
+    color: white;
+}
+
+.loading-state,
+.empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    color: var(--text-muted);
+}
+
+/* Analytics Tab Styles */
+.padding-container {
+    padding: 24px 0;
+}
+
+.analytics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.kpi-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.kpi-card {
+    background: var(--bg-main-gradient) !important;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+}
+
+.kpi-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    padding: 12px;
+}
+
+.users-icon {
+    background: #4caf50;
+}
+
+.recipes-icon {
+    background: #ff9800;
+}
+
+.kpi-value {
+    font-size: 48px;
+    font-weight: 800;
+    margin: 16px 0 0;
+    color: var(--text-main);
+}
+
+.charts-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+}
+
+.chart-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--border-medium);
+    padding: 16px;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.pie-container {
+    display: flex;
+    justify-content: center;
+    max-height: 300px;
+}
