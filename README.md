@@ -66,4 +66,4 @@ This project is configured for **Visual Studio 2022**.
 ```
 
 ---
-*Created by Yash - Recipe Sharing Platform Project*
+*Created by YASH YADAV And MOHAMMAD ZAID- Recipe Sharing Platform Project*
